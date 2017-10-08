@@ -9,6 +9,7 @@ import {
 import { Label } from "native-base";
 import Auth from "./Auth";
 import Root from "./Root";
+import Add from "./Add";
 
 var styles = StyleSheet.create({
     title: {
@@ -25,6 +26,9 @@ const Routes = {
     Auth: {
         screen: Auth,
     },
+    Add: {
+        screen: Add,
+    }
 };
 
 class Main extends Component {
@@ -32,6 +36,7 @@ class Main extends Component {
         super(props);
 
         this.reload = this.reload.bind(this);
+        this.navigateTo = this.navigateTo.bind(this);
 
         this.state = {
             isLogged: false,
@@ -59,6 +64,17 @@ class Main extends Component {
         const action = path && router.getActionForPathAndParams(path, params);
         return this.props.navigation.navigate('Root', {
             reloadMain: this.reload,
+            navigateTo: this.navigateTo,
+        }, action);
+    }
+
+    async navigateTo(route) {
+        const {path, params, screen} = Routes[route];
+        const {router} = screen;
+        const action = path && router.getActionForPathAndParams(path, params);
+        return this.props.navigation.navigate(route, {
+            reloadMain: this.reload,
+            navigateTo: this.navigateTo,
         }, action);
     }
 
@@ -77,8 +93,6 @@ class Main extends Component {
     }
 
     render() {
-
-
         return (
             <Label style={styles.title}>This or That</Label>
         );
@@ -95,6 +109,9 @@ const AppNavigator = StackNavigator(
     {
         initialRouteName: 'Main',
         headerMode: 'none',
+        navigationOptions: {
+            gesturesEnabled: false,
+        },
         mode: Platform.OS === 'ios' ? 'modal' : 'card',
     }
 );
