@@ -39,7 +39,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -67,17 +67,14 @@
 		<string>Zocial.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app requires access to the photo library for image upload.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>This app requires access to the camera for image upload.</string>
-    <!--Include to allow subdomains-->
-    <key>NSIncludesSubdomains</key>
-    <true/>
-    <!--Include to allow HTTP requests-->
-    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-    <true/>
-    <!--Include to specify minimum TLS version-->
-    <key>NSTemporaryExceptionMinimumTLSVersion</key>
-    <string>TLSv1.1</string>
+	<string>This app requires access to the photo library for image upload.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera for image upload.</string>
+	<key>NSIncludesSubdomains</key>
+	<true/>
+	<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+	<true/>
+	<key>NSTemporaryExceptionMinimumTLSVersion</key>
+	<string>TLSv1.1</string>
 </dict>
 </plist>
