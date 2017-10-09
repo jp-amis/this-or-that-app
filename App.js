@@ -1,5 +1,6 @@
 import React from 'react';
-import Main from "./js/Main";
+import { Text } from 'react-native';
+// import Main from "./js/Main";
 
 export default class App extends React.Component {
     constructor() {
@@ -10,6 +11,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        return <Main />;
+        return  <Text>Hello world!</Text>;
     }
 }
