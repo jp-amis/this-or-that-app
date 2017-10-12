@@ -104,14 +104,14 @@ class Ranking extends Component {
         return (
             <Root>
                 <Container>
-                    <Header>
+                    <Header style={{ backgroundColor: "#ffffff"}}>
                         <Left>
                             <Button transparent onPress={this.onPressClose}>
                                 <Label>close</Label>
                             </Button>
                         </Left>
                         <Body>
-                        <Title>Ranking</Title>
+                         <Title style={{ color: "#000000"}}>Ranking</Title>
                         </Body>
                         <Right/>
                     </Header>

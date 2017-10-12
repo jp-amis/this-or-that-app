@@ -57,8 +57,8 @@ class Login extends Component {
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
 
         this.state = {
-            email: '',
-            password: '',
+            email: 'juaumlol@gmail.com',
+            password: 'teste@123',
             error: '',
             loading: false
         };
@@ -121,10 +121,10 @@ class Login extends Component {
     render() {
         return (
             <Container style={styles.container}>
-                <Header>
+                <Header style={{ backgroundColor: "#ffffff"}}>
                     <Left/>
                     <Body>
-                        <Title>Login</Title>
+                        <Title style={{ color: "#000000"}}>Login</Title>
                     </Body>
                     <Right/>
                 </Header>

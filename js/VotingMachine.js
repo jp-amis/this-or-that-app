@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     Modal,
+    BackHandler,
 } from 'react-native';
 import {
     Root,
@@ -53,7 +54,7 @@ var styles = StyleSheet.create({
 });
 
 const CARD_THIS = 1;
-const CARD_THAT = 1;
+const CARD_THAT = 2;
 
 class VotingMachine extends Component {
     constructor(props) {
@@ -80,6 +81,16 @@ class VotingMachine extends Component {
         };
     }
 
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', function() {
+            return true;
+        }.bind(this));
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress');
+    }
+
     componentDidMount() {
         this.onPressReload();
     }
@@ -87,11 +98,12 @@ class VotingMachine extends Component {
     async onPressReload() {
         this.setState({ loading: true });
 
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
         let token = null;
         try {
             token = await AsyncStorage.getItem(Consts.TOKEN_KEY);
         } catch (error) {}
-
 
         let response = await fetch(`${Consts.API_URL}/this-or-that`, {
             method: 'POST',
@@ -253,14 +265,14 @@ class VotingMachine extends Component {
         return (
             <Root>
                 <Container>
-                    <Header>
+                    <Header style={{ backgroundColor: "#ffffff"}}>
                         <Left>
                             <Button transparent onPress={this.logout}>
-                                <Label>Logout</Label>
+                                <Label>logout</Label>
                             </Button>
                         </Left>
                         <Body>
-                            <Title>This or That</Title>
+                            <Title style={{ color: "#000000"}}>This or That</Title>
                         </Body>
                         <Right>
                             <Button transparent onPress={this.onPressRanking}>
@@ -302,7 +314,7 @@ class VotingMachine extends Component {
                         />
                             ) : (this.renderEmptyView())}
                     </View>
-                    <Footer>
+                    <Footer style={{ backgroundColor: "#ffffff"}}>
                         <Body>
                             <Grid>
                                 <Col>

@@ -4,7 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import {
     AsyncStorage,
     Platform,
-    StyleSheet
+    StyleSheet,
+    BackHandler
 } from "react-native";
 import { Label } from "native-base";
 import Auth from "./Auth";
@@ -91,6 +92,11 @@ class Main extends Component {
         // });
 
         this.setState({ isReady: true });
+    }
+
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress');
     }
 
     async componentDidMount() {

@@ -109,8 +109,10 @@ class Login extends Component {
                 await AsyncStorage.setItem(Consts.TOKEN_KEY, body.token);
             }
         } catch(error) {
-            this.setState({ error: error.toString() });
+            return this.setState({ error: error.toString() });
         }
+
+        this.props.navigation.state.params.reloadMain();
     }
 
     renderError() {
@@ -132,10 +134,10 @@ class Login extends Component {
     render() {
         return (
             <Container style={styles.container}>
-                <Header>
+                <Header style={{ backgroundColor: "#ffffff"}}>
                     <Left/>
                     <Body>
-                        <Title>Register</Title>
+                        <Title style={{ color: "#000000"}}>Register</Title>
                     </Body>
                     <Right/>
                 </Header>

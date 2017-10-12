@@ -4,3 +4,6 @@ module.exports = {
     TOKEN_KEY: 'token',
     QUANTITY_CARDS_TO_LOAD: 100,
 };
+
+// API_URL: 'http://thisorthat.us-east-1.elasticbeanstalk.com',
+// IMAGE_URL: 'http://thisorthat.us-east-1.elasticbeanstalk.com/uploads/',

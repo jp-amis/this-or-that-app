@@ -145,7 +145,7 @@ class Add extends Component {
     render() {
         return (
             <Container>
-                <Header>
+                <Header style={{ backgroundColor: "#ffffff"}}>
                     <Left>
                         {!this.state.loading &&
                             <Button transparent onPress={this.onPressClose}>
@@ -154,7 +154,7 @@ class Add extends Component {
                         }
                     </Left>
                     <Body>
-                        <Title>New</Title>
+                        <Title style={{ color: "#000000"}}>New</Title>
                     </Body>
                     <Right/>
                 </Header>

@@ -1,5 +1,8 @@
 import React, {Component} from "react";
 import {
+    BackHandler
+} from 'react-native';
+import {
     createNavigator,
     createNavigationContainer,
     TabRouter,
@@ -31,6 +34,16 @@ const tabRouter = TabRouter(
 class Auth extends Component {
     constructor(props) {
         super(props);
+    }
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', function() {
+           return true;
+        });
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress');
     }
 
     render() {
