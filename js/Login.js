@@ -57,8 +57,8 @@ class Login extends Component {
         this.onSignUpPressed = this.onSignUpPressed.bind(this);
 
         this.state = {
-            email: 'juaumlol@gmail.com',
-            password: 'teste@123',
+            email: '',
+            password: '',
             error: '',
             loading: false
         };
