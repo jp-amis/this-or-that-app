@@ -1,6 +1,7 @@
 import Consts from "./../Consts";
 import React, {Component} from "react";
 import {
+    AsyncStorage,
     View,
     TouchableHighlight,
     Image,
@@ -73,15 +74,50 @@ class Add extends Component {
     }
 
     async onPressSave() {
-        if (this.state.name.trim() === '') {
-            return this.setState({ error: 'Name is mandatory.', loading: false });
-        }
-
-        if (this.state.image.trim() === '') {
-            return this.setState({ error: 'Image is mandatory.', loading: false });
-        }
+        // if (this.state.name.trim() === '') {
+        //     return this.setState({ error: 'Name is mandatory.', loading: false });
+        // }
+        //
+        // if (this.state.image.trim() === '') {
+        //     return this.setState({ error: 'Image is mandatory.', loading: false });
+        // }
 
         this.setState({ error: '', loading: true });
+
+        let token = null;
+        try {
+            token = await AsyncStorage.getItem(Consts.TOKEN_KEY);
+        } catch (error) {}
+
+
+        let response = await fetch(`${Consts.API_URL}/item/new`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Token': token,
+            },
+            body: JSON.stringify({
+                name: this.state.name,
+                image: this.state.image,
+            }),
+        });
+
+        let body = await response.text();
+        body = JSON.parse(body);
+
+        if (response.status !== 200) {
+            if (response.status === 403) {
+                this.props.navigation.goBack();
+                await AsyncStorage.removeItem(Consts.TOKEN_KEY);
+                this.props.navigation.state.params.reloadMain();
+                return false;
+            }
+            this.setState({ error: body.error, loading: false });
+            return false;
+        }
+
+        this.props.navigation.state.params.extraParams.reloadList();
+        this.props.navigation.goBack();
     }
 
     onPressClose() {

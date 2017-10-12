@@ -39,18 +39,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
+	<string></string>
+	<key>NSAppTransportSecurity</key> <dict> <key>NSAllowsArbitraryLoads</key> <true/> </dict>
+
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -70,11 +62,5 @@
 	<string>This app requires access to the photo library for image upload.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera for image upload.</string>
-	<key>NSIncludesSubdomains</key>
-	<true/>
-	<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-	<true/>
-	<key>NSTemporaryExceptionMinimumTLSVersion</key>
-	<string>TLSv1.1</string>
 </dict>
 </plist>

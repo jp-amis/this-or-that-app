@@ -10,6 +10,7 @@ import { Label } from "native-base";
 import Auth from "./Auth";
 import Root from "./Root";
 import Add from "./Add";
+import Ranking from "./Ranking";
 
 var styles = StyleSheet.create({
     title: {
@@ -28,7 +29,10 @@ const Routes = {
     },
     Add: {
         screen: Add,
-    }
+    },
+    Ranking: {
+        screen: Ranking,
+    },
 };
 
 class Main extends Component {
@@ -68,13 +72,14 @@ class Main extends Component {
         }, action);
     }
 
-    async navigateTo(route) {
+    async navigateTo(route, extraParams = null) {
         const {path, params, screen} = Routes[route];
         const {router} = screen;
         const action = path && router.getActionForPathAndParams(path, params);
         return this.props.navigation.navigate(route, {
             reloadMain: this.reload,
             navigateTo: this.navigateTo,
+            extraParams,
         }, action);
     }
 
