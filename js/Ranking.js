@@ -22,6 +22,8 @@ import {
     Text,
     Card,
     CardItem,
+    Toast,
+    Root,
 } from "native-base";
 
 var styles = StyleSheet.create({
@@ -33,6 +35,16 @@ var styles = StyleSheet.create({
         marginRight: 10,
         fontSize: 12
     },
+    name: {
+        fontSize: 14,
+    },
+    position: {
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    total: {
+        fontSize: 12,
+    }
 });
 
 class Ranking extends Component {
@@ -42,6 +54,8 @@ class Ranking extends Component {
         this.onPressClose = this.onPressClose.bind(this);
 
         this.state = {
+            loading: true,
+            cards: [{},{}],
         };
     }
 
@@ -49,185 +63,85 @@ class Ranking extends Component {
         this.props.navigation.goBack();
     }
 
+    async componentDidMount() {
+        let token = null;
+        try {
+            token = await AsyncStorage.getItem(Consts.TOKEN_KEY);
+        } catch (error) {}
+
+        const response = await fetch(`${Consts.API_URL}/rank/top`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Token': token,
+            },
+        });
+
+        let body = await response.text();
+        body = JSON.parse(body);
+
+        if (response.status !== 200) {
+            if (response.status === 403) {
+                this.props.navigation.goBack();
+                await AsyncStorage.removeItem(Consts.TOKEN_KEY);
+                this.props.navigation.state.params.reloadMain();
+                return false;
+            }
+
+            Toast.show({
+                text: body.error,
+                position: 'top',
+                buttonText: 'Ok'
+            });
+            return false;
+        }
+
+        console.log(JSON.stringify(body.cards));
+        this.setState({ loading: false, cards: body.cards });
+    }
+
     render() {
         return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={this.onPressClose}>
-                            <Label>close</Label>
-                        </Button>
-                    </Left>
-                    <Body>
-                    <Title>Ranking</Title>
-                    </Body>
-                    <Right/>
-                </Header>
-                <Content>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem header>
-                            <Text>#1</Text>
-                            <Text style={ styles.smallerTextWithMarginLeft }>Lady 1</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem footer style={{ alignSelf: 'flex-end' }}>
-                            <Text style={ styles.smallerTextWithMarginRight }>Lady Bug</Text>
-                            <Text>#2</Text>
-                        </CardItem>
-                        <CardItem cardBody style={{ flex: 1 }}>
-                            <Image source={{uri: 'https://scontent-gru2-1.xx.fbcdn.net/v/t31.0-8/14884645_10154070443046238_5381593401603444922_o.jpg?oh=18bc71733bd1eebf98bc0b48817b1bb4&oe=5A77F20C'}} style={{ height: 250, flex: 1 }} />
-                        </CardItem>
-                    </Card>
-                </Content>
-            </Container>
+            <Root>
+                <Container>
+                    <Header>
+                        <Left>
+                            <Button transparent onPress={this.onPressClose}>
+                                <Label>close</Label>
+                            </Button>
+                        </Left>
+                        <Body>
+                        <Title>Ranking</Title>
+                        </Body>
+                        <Right/>
+                    </Header>
+                    <Content>
+                        {this.state.loading &&
+                        <Spinner color="black"/>
+                        }
+                        { this.state.cards.map((prop, key) => {
+                            return (
+                                <Card key={key} style={{elevation: 3}}>
+                                    <CardItem header>
+                                        <Left style={{ }}>
+                                            <Text style={styles.position}>#{ key + 1}</Text>
+                                            <Text style={styles.name}>{ prop.name }</Text>
+                                        </Left>
+                                        <Right style={{alignItems: 'flex-end' }}>
+                                            <Text style={styles.total}>{ prop.total }</Text>
+                                        </Right>
+                                    </CardItem>
+                                    <CardItem cardBody style={{flex: 1}}>
+                                        <Image
+                                            source={{uri: Consts.IMAGE_URL + prop.image }}
+                                            style={{height: 250, flex: 1}}/>
+                                    </CardItem>
+                                </Card>
+                            );
+                        }) }
+                    </Content>
+                </Container>
+            </Root>
         );
     }
 }
