@@ -31,7 +31,8 @@ var options = {
     storageOptions: {
         skipBackup: true,
         path: 'images'
-    }
+    },
+    quality: 0.1,
 };
 
 
@@ -74,13 +75,13 @@ class Add extends Component {
     }
 
     async onPressSave() {
-        // if (this.state.name.trim() === '') {
-        //     return this.setState({ error: 'Name is mandatory.', loading: false });
-        // }
-        //
-        // if (this.state.image.trim() === '') {
-        //     return this.setState({ error: 'Image is mandatory.', loading: false });
-        // }
+        if (this.state.name.trim() === '') {
+            return this.setState({ error: 'Name is mandatory.', loading: false });
+        }
+
+        if (this.state.image.trim() === '') {
+            return this.setState({ error: 'Image is mandatory.', loading: false });
+        }
 
         this.setState({ error: '', loading: true });
 

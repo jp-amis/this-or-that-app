@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Label } from "native-base";
 import Auth from "./Auth";
-import Root from "./Root";
+import VotingMachine from "./VotingMachine";
 import Add from "./Add";
 import Ranking from "./Ranking";
 
@@ -21,8 +21,8 @@ var styles = StyleSheet.create({
 });
 
 const Routes = {
-    Root: {
-        screen: Root,
+    VotingMachine: {
+        screen: VotingMachine,
     },
     Auth: {
         screen: Auth,
@@ -63,10 +63,10 @@ class Main extends Component {
             }, action);
         }
 
-        const {path, params, screen} = Routes.Root;
+        const {path, params, screen} = Routes.VotingMachine;
         const {router} = screen;
         const action = path && router.getActionForPathAndParams(path, params);
-        return this.props.navigation.navigate('Root', {
+        return this.props.navigation.navigate('VotingMachine', {
             reloadMain: this.reload,
             navigateTo: this.navigateTo,
         }, action);
